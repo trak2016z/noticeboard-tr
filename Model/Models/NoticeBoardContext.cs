@@ -5,7 +5,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity.ModelConfiguration.Conventions;
 
-namespace NoticeBoard.Models
+namespace Repo.Models
 {
     // You can add profile data for the user by adding more properties to your User class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
 
@@ -20,6 +20,7 @@ namespace NoticeBoard.Models
         {
             return new NoticeBoardContext();
         }
+
         public DbSet<Category> Category { get; set; }
         public DbSet<Advertisement> Advertisements { get; set; }
         public DbSet<User> User { get; set; }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
 
-namespace NoticeBoard.Models
+namespace Repo.Models
 {
     public class AdvertisementCategory
     {
