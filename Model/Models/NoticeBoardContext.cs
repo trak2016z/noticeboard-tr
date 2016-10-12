@@ -25,7 +25,7 @@ namespace Repo.Models
         public DbSet<Advertisement> Advertisements { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<AdvertisementCategory> AdvertisementCategory { get; set; }
-
+        public DbSet<AdvertisementImage> AdvertisementImage { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

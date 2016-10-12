@@ -10,6 +10,7 @@ namespace Repo.Models
     {
         public AdvertisementCategory()
         {
+
         }
 
         public int Id { get; set; }

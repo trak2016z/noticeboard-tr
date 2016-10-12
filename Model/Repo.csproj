@@ -160,6 +160,7 @@
       <DependentUpon>201610120810502_FirstDatabase.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\AdvertisementImage.cs" />
     <Compile Include="Models\View\AccountViewModels.cs" />
     <Compile Include="Models\Advertisement.cs" />
     <Compile Include="Models\AdvertisementCategory.cs" />

@@ -29,6 +29,9 @@ namespace Repo.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public System.DateTime Date { get; set; }
 
+        [Display(Name = "Cena")]
+        public double Price { get; set; }
+
         public string UserId { get; set; }
 
         public virtual ICollection<AdvertisementCategory> AdvertisementCategory { get; set; }
