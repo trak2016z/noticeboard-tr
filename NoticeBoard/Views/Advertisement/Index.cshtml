@@ -12,16 +12,19 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.UserId)
+            @Html.DisplayNameFor(model => model.Title)
         </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.UserId)
+        </th>*@
         <th>
             @Html.DisplayNameFor(model => model.Description)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Title)
+            @Html.DisplayNameFor(model => model.Date)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Date)
+            @Html.DisplayNameFor(model => model.Price)
         </th>
         <th></th>
     </tr>
@@ -30,19 +33,23 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.UserId)
+                @Html.DisplayFor(modelItem => item.Title)
             </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.UserId)
+            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
+           
             <td>
                 @Html.DisplayFor(modelItem => item.Date)
             </td>
             <td>
-                <div class="btn-group">
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                <div id="buttonGroupInAdvList" class="btn-group">
                     @Html.ActionLink("Edytuj", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" })
                     @Html.ActionLink("Szczegóły", "Details", new { id = item.Id }, new { @class = "btn btn-info" })
                     @Html.ActionLink("Usuń", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })

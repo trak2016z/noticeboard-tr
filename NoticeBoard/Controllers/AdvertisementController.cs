@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Repo.Models;
 using Microsoft.AspNet.Identity;
+using System.Diagnostics;
 
 namespace NoticeBoard.Controllers
 {
@@ -18,7 +19,8 @@ namespace NoticeBoard.Controllers
         // GET: Advertisement
         public ActionResult Index()
         {
-            var advertisements = db.Advertisements.Include(a => a.User);
+            db.Database.Log = message => Trace.WriteLine(message);
+            var advertisements = db.Advertisements.AsNoTracking();
             return View(advertisements.ToList());
         }
 
@@ -49,12 +51,13 @@ namespace NoticeBoard.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Description,Title")] Advertisement advertisement)
+        public ActionResult Create([Bind(Include = "Description,Title,Price")] Advertisement advertisement)
         {
             if (ModelState.IsValid)
             {
                 advertisement.UserId = User.Identity.GetUserId();
                 advertisement.Date = DateTime.Now;
+                
                 try
                 {
                     db.Advertisements.Add(advertisement);
@@ -93,7 +96,7 @@ namespace NoticeBoard.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Description,Title,Date,UserId")] Advertisement advertisement)
+        public ActionResult Edit([Bind(Include = "Id,Description,Title,Date,UserId, Price")] Advertisement advertisement)
         {
             if (ModelState.IsValid)
             {

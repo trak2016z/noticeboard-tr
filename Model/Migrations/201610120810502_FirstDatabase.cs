@@ -20,16 +20,17 @@ namespace Model.Migrations
                 .ForeignKey("dbo.Category", t => t.CategoryId)
                 .Index(t => t.CategoryId)
                 .Index(t => t.AdvertisementId);
-            
+
             CreateTable(
                 "dbo.Advertisement",
                 c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Description = c.String(maxLength: 500),
-                        Title = c.String(maxLength: 250),
-                        Date = c.DateTime(nullable: false),
-                        UserId = c.String(nullable: false, maxLength: 128),
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Description = c.String(maxLength: 500),
+                    Title = c.String(maxLength: 250),
+                    Date = c.DateTime(nullable: false),
+                    UserId = c.String(nullable: false, maxLength: 128),
+                    Price = c.Double(nullable: false)
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)

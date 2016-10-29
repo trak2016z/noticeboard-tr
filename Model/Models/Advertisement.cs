@@ -27,10 +27,12 @@ namespace Repo.Models
         [Display(Name = "Data dodania")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public System.DateTime Date { get; set; }
+        public DateTime Date { get; set; }
 
         [Display(Name = "Cena")]
-        public double Price { get; set; }
+        [DataType(DataType.Currency)]
+        [Required(ErrorMessage = "Cena jest wymagana")]
+        public decimal Price { get; set; }
 
         public string UserId { get; set; }
 
