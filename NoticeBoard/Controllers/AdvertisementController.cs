@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Repo.Models;
 using Repo.Advertisements;
+using Repo.IRepo;
 using Microsoft.AspNet.Identity;
 using System.Diagnostics;
 
@@ -15,12 +16,18 @@ namespace NoticeBoard.Controllers
 {
     public class AdvertisementController : Controller
     {
-        Advertisements advRepo = new Advertisements();
+        private readonly IAdvertisementRepo _repo;
+
+        public AdvertisementController(IAdvertisementRepo repo)
+        {
+            _repo = repo;
+        }
+
         // GET: Advertisement
         public ActionResult Index()
         {
-            var advertisements = advRepo.GetAdvertisements();
-            return View(advertisements.ToList());
+            var advertisements = _repo.GetAdvetisements();
+            return View(advertisements);
         }
 
         // GET: Advertisement/Details/5

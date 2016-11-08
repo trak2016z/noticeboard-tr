@@ -155,7 +155,9 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Advertisements\Advertisements.cs" />
+    <Compile Include="Advertisements\AdvertisementRepo.cs" />
+    <Compile Include="IRepo\IAdvertisementContext.cs" />
+    <Compile Include="IRepo\IAdvertisementRepo.cs" />
     <Compile Include="Migrations\201610120810502_FirstDatabase.cs" />
     <Compile Include="Migrations\201610120810502_FirstDatabase.Designer.cs">
       <DependentUpon>201610120810502_FirstDatabase.cs</DependentUpon>
