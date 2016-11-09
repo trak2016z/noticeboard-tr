@@ -31,55 +31,56 @@ namespace NoticeBoard.Controllers
         }
 
         // GET: Advertisement/Details/5
-        //public ActionResult Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Advertisement advertisement = db.Advertisements.Find(id);
-        //    if (advertisement == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(advertisement);
-        //}
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Advertisement advertisement = _repo.GetAdvertisementById((int) id);
+            if (advertisement == null)
+            {
+                return HttpNotFound();
+            }
+            return View(advertisement);
+        }
 
         //// GET: Advertisement/Create
-        //public ActionResult Create()
-        //{
-        //    return View();
-        //}
+        public ActionResult Create()
+        {
+            return View();
+        }
 
         //// POST: Advertisement/Create
         //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[Authorize]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create([Bind(Include = "Description,Title,Price")] Advertisement advertisement)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        advertisement.UserId = User.Identity.GetUserId();
-        //        advertisement.Date = DateTime.Now;
-                
-        //        try
-        //        {
-        //            db.Advertisements.Add(advertisement);
-        //            db.SaveChanges();
-        //            return RedirectToAction("Index");
-        //        }
-        //        catch (Exception)
-        //        {
-        //            return View(advertisement);
-        //        }
-                
-                
-        //    }
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "Description,Title,Price")] Advertisement advertisement)
+        {
+            if (ModelState.IsValid)
+            {
+                advertisement.UserId = User.Identity.GetUserId();
+                advertisement.Date = DateTime.Now;
 
-        //    return View(advertisement);
-        //}
+                try
+                {
+                    _repo.AddAdvetisement(advertisement);
+                    _repo.SaveChanges();
+                    
+                    return RedirectToAction("Index");
+                }
+                catch (Exception)
+                {
+                    return View(advertisement);
+                }
+
+
+            }
+
+            return View(advertisement);
+        }
 
         //// GET: Advertisement/Edit/5
         //public ActionResult Edit(int? id)

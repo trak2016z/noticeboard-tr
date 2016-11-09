@@ -17,11 +17,27 @@ namespace Repo.Advertisements
         {
             _db = db;
         }
-        
+
+        public void AddAdvetisement(Advertisement adv)
+        {
+            _db.Advertisement.Add(adv);
+        }
+
+        public Advertisement GetAdvertisementById(int id)
+        {
+            Advertisement adv = _db.Advertisement.Find(id);
+            return adv;
+        }
+
         public IQueryable<Advertisement> GetAdvetisements()
         {
             var advs = _db.Advertisement.AsNoTracking();
             return advs;
+        }
+
+        public void SaveChanges()
+        {
+            _db.SaveChanges();
         }
     }
 }
