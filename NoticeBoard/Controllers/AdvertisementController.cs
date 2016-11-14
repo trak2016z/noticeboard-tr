@@ -83,63 +83,75 @@ namespace NoticeBoard.Controllers
         }
 
         //// GET: Advertisement/Edit/5
-        //public ActionResult Edit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Advertisement advertisement = db.Advertisements.Find(id);
-        //    if (advertisement == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    ViewBag.UserId = new SelectList(db.Users, "Id", "Email", advertisement.UserId);
-        //    return View(advertisement);
-        //}
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Advertisement advertisement = _repo.GetAdvertisementById((int)id);
+            if (advertisement == null)
+            {
+                return HttpNotFound();
+            }
+            
+            return View(advertisement);
+        }
 
         //// POST: Advertisement/Edit/5
         //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit([Bind(Include = "Id,Description,Title,Date,UserId, Price")] Advertisement advertisement)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.Entry(advertisement).State = EntityState.Modified;
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-        //    ViewBag.UserId = new SelectList(db.Users, "Id", "Email", advertisement.UserId);
-        //    return View(advertisement);
-        //}
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "Id,Description,Title,Date,UserId, Price")] Advertisement advertisement)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _repo.UpdateAdvertisement(advertisement);
+                    _repo.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    return View(advertisement);
+                }
+                return RedirectToAction("Index");
+            }
+            
+            return View(advertisement);
+        }
 
         //// GET: Advertisement/Delete/5
-        //public ActionResult Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Advertisement advertisement = db.Advertisements.Find(id);
-        //    if (advertisement == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(advertisement);
-        //}
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Advertisement advertisement = _repo.GetAdvertisementById((int)id);
+            if (advertisement == null)
+            {
+                return HttpNotFound();
+            }
+            return View(advertisement);
+        }
 
         //// POST: Advertisement/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult DeleteConfirmed(int id)
-        //{
-        //    Advertisement advertisement = db.Advertisements.Find(id);
-        //    db.Advertisements.Remove(advertisement);
-        //    db.SaveChanges();
-        //    return RedirectToAction("Index");
-        //}
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            for (int i = 0; i < 2; i++) 
+            {
+                if (_repo.DeleteAdvertisement(id))
+                {
+                    break;
+                } 
+
+            }
+            return RedirectToAction("Index");
+        }
 
         //protected override void Dispose(bool disposing)
         //{

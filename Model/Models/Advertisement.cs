@@ -12,6 +12,7 @@ namespace Repo.Models
         public Advertisement()
         {
             this.AdvertisementCategory = new HashSet<AdvertisementCategory>();
+            this.AdvertisementImage = new HashSet<AdvertisementImage>();
         }
 
         [Display(Name = "Id:")]
@@ -38,6 +39,7 @@ namespace Repo.Models
         public string UserId { get; set; }
 
         public virtual ICollection<AdvertisementCategory> AdvertisementCategory { get; set; }
+        public virtual ICollection<AdvertisementImage> AdvertisementImage { get; private set; }
 
         public virtual User User { get; set; }
     }

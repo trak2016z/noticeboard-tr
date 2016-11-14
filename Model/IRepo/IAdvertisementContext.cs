@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.Entity.Infrastructure;
 
 namespace Repo.IRepo
 {
@@ -14,7 +15,7 @@ namespace Repo.IRepo
         DbSet<Advertisement> Advertisement { get; set; }
         DbSet<User> User { get; set; }
         DbSet<AdvertisementCategory> AdvertisementCategory { get; set; }
-
+        DbEntityEntry Entry(object entity);
         int SaveChanges();
         Database database { get; }
     }

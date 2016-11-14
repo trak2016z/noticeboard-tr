@@ -27,7 +27,6 @@ namespace Repo.Models
         public DbSet<User> User { get; set; }
         public DbSet<AdvertisementCategory> AdvertisementCategory { get; set; }
         public DbSet<AdvertisementImage> AdvertisementImage { get; set; }
-
         public DbSet<Advertisement> Advertisement { get; set; }
 
         public Database database { get; }
@@ -39,6 +38,7 @@ namespace Repo.Models
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>(); // global turn off CascadeDelete
 
             modelBuilder.Entity<Advertisement>().HasRequired(x => x.User).WithMany(x => x.Advertisements).HasForeignKey(x => x.UserId).WillCascadeOnDelete(true); 
+            
             //Fluent API, relation beetwen table in DB and turn on CascadeDelete in relation Advertisement - User
         }
     }
