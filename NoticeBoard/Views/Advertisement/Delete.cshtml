@@ -1,10 +1,10 @@
 ﻿@model Repo.Models.Advertisement
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Usuwanie";
 }
 
-<h2>Delete</h2>
+<h2>Usuwanie</h2>
 
 <h3>Czy na pewno chcesz usunąć ogłoszenie ?</h3>
 <div>
@@ -42,6 +42,14 @@
         <dd>
             @Html.DisplayFor(model => model.Date)
         </dd>
+        
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
 
     </dl>
 
@@ -49,8 +57,8 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-warning" })
+            <input type="submit" value="Delete" class="btn btn-default" />
+            @Html.ActionLink("Powrót", "Index", null, new { @class = "btn btn-warning" })
         </div>
     }
 </div>
