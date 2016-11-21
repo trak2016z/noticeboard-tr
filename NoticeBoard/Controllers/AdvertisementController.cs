@@ -123,7 +123,7 @@ namespace NoticeBoard.Controllers
         }
 
         //// GET: Advertisement/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int? id, bool? error)
         {
             if (id == null)
             {
@@ -134,6 +134,10 @@ namespace NoticeBoard.Controllers
             {
                 return HttpNotFound();
             }
+            if (error != null)
+            {
+                ViewBag.Error = true;
+            }
             return View(advertisement);
         }
 
@@ -142,13 +146,15 @@ namespace NoticeBoard.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            for (int i = 0; i < 2; i++) 
+            _repo.DeleteAdvertisement(id);
+            try
             {
-                if (_repo.DeleteAdvertisement(id))
-                {
-                    break;
-                } 
+                _repo.SaveChanges();
+            }
+            catch (Exception)
+            {
 
+                return RedirectToAction("Delete", new { id = id, error = true });
             }
             return RedirectToAction("Index");
         }
