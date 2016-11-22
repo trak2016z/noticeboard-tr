@@ -6,6 +6,19 @@
 }
 
 <h2>@ViewBag.Description</h2>
+@if(ViewBag.Error == true)
+{
+    <div class="alert alert-danger" role="alert">
+        Wystąpił błąd podczas zapisywania zmian
+        Odśwież stronę i spróbuj ponownie !
+    </div>
+}
+else if (ViewBag.Error == false)
+{
+    <div class="alert alert-success" role="alert">
+        Pomyślnie zapisano zmiany !
+    </div>
+}
 
 
 @using (Html.BeginForm())
@@ -42,13 +55,13 @@
             </div>
         </div>
 
-        <div class="form-group">
+        @*<div class="form-group">
             @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
             </div>
-        </div>
+        </div>*@
 
         @Html.HiddenFor(m => m.Date)
         @Html.HiddenFor(m => m.UserId)
@@ -60,13 +73,13 @@
                 @Html.DropDownList("UserId", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.UserId, "", new { @class = "text-danger" })
             </div>
-        </div>
+        </div>*@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-success" />
             </div>
-        </div>*@
+        </div>
     </div>
 }
 

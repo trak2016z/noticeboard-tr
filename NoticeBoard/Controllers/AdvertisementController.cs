@@ -104,7 +104,7 @@ namespace NoticeBoard.Controllers
         [HttpPost]
         //[Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Description,Title,Date,UserId, Price")] Advertisement advertisement)
+        public ActionResult Edit([Bind(Include = "Id,Description,Title,Date,UserId,Price")] Advertisement advertisement)
         {
             if (ModelState.IsValid)
             {
@@ -115,11 +115,12 @@ namespace NoticeBoard.Controllers
                 }
                 catch (Exception)
                 {
+                    ViewBag.Error = true;
                     return View(advertisement);
                 }
-                return RedirectToAction("Index");
+               // return RedirectToAction("Index");
             }
-            
+            ViewBag.Error = false;
             return View(advertisement);
         }
 
