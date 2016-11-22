@@ -55,7 +55,7 @@ namespace NoticeBoard.Controllers
         //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [Authorize]
+        [Authorize] //tylko dla zalogowanych
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Description,Title,Price")] Advertisement advertisement)
         {
@@ -101,7 +101,8 @@ namespace NoticeBoard.Controllers
         //// POST: Advertisement/Edit/5
         //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
+        [HttpPost]
+        //[Authorize]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Description,Title,Date,UserId, Price")] Advertisement advertisement)
         {
