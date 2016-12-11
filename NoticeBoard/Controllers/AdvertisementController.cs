@@ -102,7 +102,7 @@ namespace NoticeBoard.Controllers
         //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Description,Title,Date,UserId,Price")] Advertisement advertisement)
         {
@@ -160,6 +160,13 @@ namespace NoticeBoard.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        //Get:/Advertisement
+        //public ActionResult Partial()
+        //{
+        //    var adv = _repo.GetAdvetisements();
+        //    return PartialView("Index", adv);
+        //}
 
         //protected override void Dispose(bool disposing)
         //{

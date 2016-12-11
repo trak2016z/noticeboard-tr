@@ -58,11 +58,12 @@ namespace NoticeBoard
             //   appId: "",
             //   appSecret: "");
 
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = "672693374622-gs7q98it0r8r6gnfise95vpmin0ug2ni.apps.googleusercontent.com",
+                ClientSecret = "YRAtn-iEjxKfCbQ-gNDCjX1V"
+            });
+            
         }
     }
 }
