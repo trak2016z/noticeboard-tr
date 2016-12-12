@@ -82,6 +82,7 @@ namespace NoticeBoard.Controllers
             return View(advertisement);
         }
 
+        [Authorize]
         //// GET: Advertisement/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -93,6 +94,10 @@ namespace NoticeBoard.Controllers
             if (advertisement == null)
             {
                 return HttpNotFound();
+            }
+            else if(advertisement.UserId != User.Identity.GetUserId() && !(User.IsInRole("Admin") || User.IsInRole("Moderator"))) 
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             
             return View(advertisement);
@@ -124,6 +129,7 @@ namespace NoticeBoard.Controllers
             return View(advertisement);
         }
 
+        [Authorize]
         //// GET: Advertisement/Delete/5
         public ActionResult Delete(int? id, bool? error)
         {
@@ -135,6 +141,10 @@ namespace NoticeBoard.Controllers
             if (advertisement == null)
             {
                 return HttpNotFound();
+            }
+            else if(advertisement.UserId != User.Identity.GetUserId() && !User.IsInRole("Admin"))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             if (error != null)
             {

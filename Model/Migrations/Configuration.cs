@@ -29,6 +29,7 @@ namespace Model.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
+
             SeedRoles(context);
             SeedUser(context);
             SeedAdvertisements(context);
@@ -47,6 +48,14 @@ namespace Model.Migrations
 
                 roleManager.Create(role);
             }
+
+            if (!roleManager.RoleExists("Moderator"))
+            {
+                var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
+                role.Name = "Moderator";
+
+                roleManager.Create(role);
+            }
         }
         private void SeedUser(NoticeBoardContext context)
         {
@@ -55,17 +64,36 @@ namespace Model.Migrations
             if(!context.User.Any(u => u.UserName == "Admin"))
             {
                 var user = new User {
-                    UserName = "Admin",
+                    UserName = "admin@admin.pl",
                     Email = "admin@admin.pl",
                     FirsName = "Lukasz",
                     SecondName = "Wal"
                 };
+
                 var adminResult = manager.Create(user, "qwerty");
                 if (adminResult.Succeeded)
                 {
                     manager.AddToRole(user.Id, "Admin");
                 }
             }
+
+            if (!context.User.Any(u => u.UserName == "Lukasz"))
+            {
+                var user = new User
+                {
+                    UserName = "lukasz@lukasz.pl",
+                    Email = "lukasz@lukasz.pl",
+                    FirsName = "Lukasz",
+                    SecondName = "Wal"
+                };
+
+                var adminResult = manager.Create(user, "qwerty");
+                if (adminResult.Succeeded)
+                {
+                    manager.AddToRole(user.Id, "Moderator");
+                }
+            }
+
         }
         private void SeedAdvertisements(NoticeBoardContext context)
         {
@@ -77,8 +105,8 @@ namespace Model.Migrations
                 {
                     Id = i,
                     UserId = userId,
-                    Description = "Tresc og³oszenia" + i.ToString(),
-                    Title = "Tytu³ og³oszenia" + i.ToString(),
+                    Description = "Tresc ogloszenia " + i.ToString(),
+                    Title = "Tytu³ og³oszenia " + i.ToString(),
                     Date = DateTime.Now.AddDays(-i)
                 };
                 context.Set<Advertisement>().AddOrUpdate(adv);

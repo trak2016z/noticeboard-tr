@@ -1,9 +1,8 @@
 ﻿@model Repo.Models.Advertisement
-
+@using Microsoft.AspNet.Identity;
 @{
     ViewBag.Title = "Details";
 }
-
 <h2>Szczegóły ogłoszenia</h2>
 
 <div>
@@ -60,6 +59,12 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edytuj", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary" })
     @Html.ActionLink("Powrót", "Index", null, new { @class = "btn btn-warning" })
+
+    @if(User.Identity.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator") || Model.UserId == User.Identity.GetUserId()))
+    {
+        @Html.ActionLink("Edytuj", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary" })
+        @:       
+        @Html.ActionLink("Usuń", "Delete", new { id = Model.Id }, new { @class = "btn btn-danger" })
+    }
 </p>
