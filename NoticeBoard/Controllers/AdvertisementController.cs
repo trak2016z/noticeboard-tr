@@ -25,15 +25,46 @@ namespace NoticeBoard.Controllers
         }
 
         // GET: Advertisement
-        public ActionResult Index(int? page)
+        public ActionResult Index(int? page, string sortOrder)
         {
             var currentPage = page ?? 1;
             int onPage = 15;
+
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.DateSort = sortOrder == "DataDodania" ? "DataDodaniaAsc" : "DataDodania";
+            ViewBag.TitleSort = sortOrder == "TytulAsc" ? "Tytul" : "TytulAsc";
+            ViewBag.PriceSort = sortOrder == "Cena" ? "CenaAsc" : "Cena";
+
             var advertisement = _repo.GetAdvetisements();
-            advertisement = advertisement.OrderByDescending(adv => adv.Date);
+            switch (sortOrder)
+            {
+                case "DataDodania":
+                    advertisement = advertisement.OrderByDescending(a => a.Date);
+                    break;
+                case "DataDodaniaAsc":
+                    advertisement = advertisement.OrderBy(a => a.Date);
+                    break;
+                case "Tytul":
+                    advertisement = advertisement.OrderByDescending(a => a.Title);
+                    break;
+                case "TytulAsc":
+                    advertisement = advertisement.OrderBy(a => a.Title);
+                    break;
+                case "Cena":
+                    advertisement = advertisement.OrderByDescending(a => a.Price);
+                    break;
+                case "CenaAsc":
+                    advertisement = advertisement.OrderBy(a => a.Price);
+                    break;
+
+                default:
+                    advertisement = advertisement.OrderByDescending(a => a.Id);
+                    break;
+            }
+
+            //advertisement = advertisement.OrderByDescending(adv => adv.Date);
             return View(advertisement.ToPagedList<Advertisement>(currentPage, onPage));
-            //var advertisements = _repo.GetAdvetisements();
-            //return View(advertisements);
+
         }
 
         // GET: Advertisement/Details/5

@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="pl-PL">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,22 +22,22 @@
             </div>
             <div class="navbar-collapse collapse">
                 @*<ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>*@
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("About", "About", "Home")</li>
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    </ul>*@
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Strona głowna","Index","Home")</li>
+                    <li>@Html.ActionLink("Strona głowna", "Index", "Home")</li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Ogłoszenia<span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
                             <li>@Html.ActionLink("Lista ogłoszeń", "Index", "Advertisement")</li>
                             @if (User.Identity.IsAuthenticated)
                             {
-                                <li>@Html.ActionLink("Dodaj ogłoszenie","Create", "Advertisement")</li>
+                                <li>@Html.ActionLink("Dodaj ogłoszenie", "Create", "Advertisement")</li>
                             }
                             @*<li class="divider"></li>
-                            <li>@Html.ActionLink("Lista partial View", "Partial", "Advertisement")</li>*@
+                                <li>@Html.ActionLink("Lista partial View", "Partial", "Advertisement")</li>*@
                         </ul>
                     </li>
                 </ul>
@@ -49,7 +49,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - Tabica ogłoszeń</p>
         </footer>
     </div>
 

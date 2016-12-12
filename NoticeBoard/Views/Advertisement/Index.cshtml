@@ -1,6 +1,5 @@
 ﻿@using PagedList.Mvc;
 
-@*@model IEnumerable<Repo.Models.Advertisement>*@
 @model PagedList.IPagedList<Repo.Models.Advertisement>
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css"/>
 @{
@@ -17,19 +16,16 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model[0].Title)
+            @Html.ActionLink("Tytul", "Index", new { sortOrder = ViewBag.TytulSort})
         </th>
-        @*<th>
-            @Html.DisplayNameFor(model => model.UserId)
-        </th>*@
         <th>
             @Html.DisplayNameFor(model => model[0].Description)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model[0].Date)
+            @Html.ActionLink("Data dodania", "Index", new { sortOrder = ViewBag.DateSort})
         </th>
         <th>
-            @Html.DisplayNameFor(model => model[0].Price)
+            @Html.ActionLink("Cena", "Index", new { sortOrder = ViewBag.PriceSort})
         </th>
         <th></th>
     </tr>
@@ -74,5 +70,5 @@
 <div>
     <br />
     Strona @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) z @Model.PageCount
-    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort}))
 </div>
