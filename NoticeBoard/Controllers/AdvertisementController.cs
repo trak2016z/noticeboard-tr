@@ -11,6 +11,7 @@ using Repo.Advertisements;
 using Repo.IRepo;
 using Microsoft.AspNet.Identity;
 using System.Diagnostics;
+using PagedList;
 
 namespace NoticeBoard.Controllers
 {
@@ -24,10 +25,15 @@ namespace NoticeBoard.Controllers
         }
 
         // GET: Advertisement
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
-            var advertisements = _repo.GetAdvetisements();
-            return View(advertisements);
+            var currentPage = page ?? 1;
+            int onPage = 15;
+            var advertisement = _repo.GetAdvetisements();
+            advertisement = advertisement.OrderByDescending(adv => adv.Date);
+            return View(advertisement.ToPagedList<Advertisement>(currentPage, onPage));
+            //var advertisements = _repo.GetAdvetisements();
+            //return View(advertisements);
         }
 
         // GET: Advertisement/Details/5

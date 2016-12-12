@@ -61,5 +61,15 @@ namespace Repo.Advertisements
         {
             _db.Entry(adv).State = EntityState.Modified;
         }
+        public IQueryable<Advertisement> GetPage(int? page = 1, int? pageSize = 10)
+        {
+            //sortowanie malejaco - czyli od najnowszych
+            //skip - opuszczanie wybranej liczby elementów
+            //take - ile elem trzeba pobrać
+            var advs = _db.Advertisement.OrderByDescending(a => a.Date).Skip((page.Value - 1) * 
+                pageSize.Value).Take(pageSize.Value);
+           
+            return advs;
+        }
     }
 }
