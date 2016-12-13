@@ -1,25 +1,26 @@
 ﻿@using PagedList.Mvc;
+@using Microsoft.AspNet.Identity;
 
 @model PagedList.IPagedList<Repo.Models.Advertisement>
+@*@model Repo.Models.Advertisement*@
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 @{
-    ViewBag.Title = "Ogłoszenia";
+    ViewBag.Title = "Moje ogłoszenia";
 }
 
-<h2>Lista ogłoszeń</h2>
+<h2>Lista moich ogłoszeń</h2>
 @if (User.Identity.IsAuthenticated)
 {
     @Html.ActionLink("Dodaj ogłoszenie", "Create", null, new { @class = "btn btn-success" })
 }
 
-
-@using (Html.BeginForm())
+@*@using (Html.BeginForm())
 {
     <p>
         Wyszukaj: @Html.TextBox("SearchString")
         <input type="submit" value="Wyszukaj" />
     </p>
-}
+}*@
 
 <table class="table">
     <tr>
@@ -78,5 +79,5 @@
 <div>
     <br />
     Strona @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) z @Model.PageCount
-    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort }))
+    @Html.PagedListPager(Model, page => Url.Action("MyAdvertisements", new { page, sortOrder = ViewBag.CurrentSort }))
 </div>

@@ -109,7 +109,7 @@ namespace NoticeBoard.Controllers
                     _repo.AddAdvetisement(advertisement);
                     _repo.SaveChanges();
                     
-                    return RedirectToAction("Index");
+                    return RedirectToAction("MyAdvertisements");
                 }
                 catch (Exception)
                 {
@@ -209,6 +209,19 @@ namespace NoticeBoard.Controllers
                 return RedirectToAction("Delete", new { id = id, error = true });
             }
             return RedirectToAction("Index");
+        }
+        public ActionResult MyAdvertisements(int? page)
+        {
+            var currentPage = page ?? 1;
+            int onPage = 15;
+            string userId = User.Identity.GetUserId();
+
+            var advertisements = _repo.GetAdvetisements();
+            advertisements = advertisements.OrderByDescending(d => d.Date).Where(u => u.UserId == userId);
+
+            return View(advertisements.ToPagedList<Advertisement>(currentPage, onPage));
+            //return View(advertisements);
+
         }
 
         //Get:/Advertisement
