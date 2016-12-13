@@ -25,7 +25,7 @@ namespace NoticeBoard.Controllers
         }
 
         // GET: Advertisement
-        public ActionResult Index(int? page, string sortOrder)
+        public ActionResult Index(int? page, string sortOrder, string searchString)
         {
             var currentPage = page ?? 1;
             int onPage = 15;
@@ -61,7 +61,10 @@ namespace NoticeBoard.Controllers
                     advertisement = advertisement.OrderByDescending(a => a.Id);
                     break;
             }
-
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                advertisement = advertisement.Where(s => s.Title.Contains(searchString));
+            }
             //advertisement = advertisement.OrderByDescending(adv => adv.Date);
             return View(advertisement.ToPagedList<Advertisement>(currentPage, onPage));
 

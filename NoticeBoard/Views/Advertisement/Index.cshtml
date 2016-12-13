@@ -11,12 +11,20 @@
 {
     @Html.ActionLink("Dodaj ogłoszenie", "Create", null, new { @class = "btn btn-success" })
 }
+
 <p>
+    @using (Html.BeginForm())
+    {
+    <p>
+        Wyszukaj: @Html.TextBox("SearchString")
+        <input type="submit" value="Wyszukaj" />
+    </p>
+    }
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.ActionLink("Tytul", "Index", new { sortOrder = ViewBag.TytulSort})
+            @Html.DisplayNameFor(model => model[0].Title)
         </th>
         <th>
             @Html.DisplayNameFor(model => model[0].Description)
