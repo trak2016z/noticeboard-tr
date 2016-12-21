@@ -7,10 +7,10 @@
 <h2>Dodaj ogłoszenie</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("Create", "Advertisement", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4></h4>
         <hr />
@@ -38,45 +38,60 @@
                 @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
             </div>
         </div>
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <div class="form-group">
+                @Html.Label("Zdjęcie", new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input name="ImageFile" type="file" id="ImageFile" multiple/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Dodaj ogłoszenie" class="btn btn-default" />
+                </div>
+            </div>
+        }
+        @*<div class="form-group">
+                @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
 
         @*<div class="form-group">
-            @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
+                @Html.LabelFor(model => model.UserId, "UserId", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("UserId", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.UserId, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+
+        @*<form id="formTest" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.AdvertisementImage, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <span class="btn btn-default btn-file"><span>Dodaj zdjęcia . . .</span><input type="file" name="fileUpload" id="file" multiple /></span>
+                        <span class="fileinput-filename"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Dodaj" class="btn btn-success" />
+                    </div>
+                </div>
+            </form>*@
 
         @*<div class="form-group">
-            @Html.LabelFor(model => model.UserId, "UserId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("UserId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.UserId, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
-        
-        <div class="form-group">
-            @Html.LabelFor(model => model.AdvertisementImage, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <span class="btn btn-default btn-file"><span>Dodaj zdjęcia . . .</span><input type="file" multiple /></span>
-                <span class="fileinput-filename"></span><span class="fileinput-new">Nie wybrano plików</span>
-            </div>
-        </div>
-       
-
-        @*<div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <span class="btn btn-default btn-file"><span>Dodaj zdjęcia . . .</span><input type="file" multiple /></span>
-                <span class="fileinput-filename"></span><span class="fileinput-new">Nie wybrano plików</span>
-            </div>
-        </div>*@
-        
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Dodaj" class="btn btn-success" />
-            </div>
-        </div>
+                @Html.LabelFor(model => model.AdvertisementImage, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <span class="btn btn-default btn-file"><span>Dodaj zdjęcia . . .</span><input type="file" name="file" multiple /></span>
+                    <span class="fileinput-filename"></span><span class="fileinput-new">Nie wybrano plików</span>
+                </div>
+            </div>*@
     </div>
 }
 
@@ -84,6 +99,49 @@
     @Html.ActionLink("Powrót", "Index", null, new { @class = "btn btn-warning" })
 </div>
 
-@section Scripts {
+@section Scripts
+    {
     @Scripts.Render("~/bundles/jqueryval")
 }
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script >
+    @*<script>
+            $(document).ready(function(){
+                $('#btnUpload').click(function () {
+
+                    // Checking whether FormData is available in browser
+                    if (window.FormData !== undefined) {
+
+                        var fileUpload = $("#fileUpload").get(0);
+                        var files = fileUpload.files;
+
+                        // Create FormData object
+                        var fileData = new FormData();
+
+                        // Looping over all files and add it to FormData object
+                        for (var i = 0; i < files.length; i++) {
+                            fileData.append(files[i].name, files[i]);
+                        }
+
+                        // Adding one more key to FormData object
+                        //fileData.append('username', ‘Manas’);
+
+                        $.ajax({
+                            url: '/Advertisement/Create',
+                            type: "POST",
+                            contentType: false, // Not to set any content header
+                            processData: false, // Not to process data
+                            data: fileData,
+                            success: function (result) {
+                                alert(result);
+                            },
+                            error: function (err) {
+                                alert(err.statusText);
+                            }
+                        });
+                    } else {
+                        alert("FormData is not supported.");
+                    }
+                });
+            });
+            </script>*@

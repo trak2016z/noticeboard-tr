@@ -39,7 +39,7 @@ namespace Repo.Models
         public string UserId { get; set; }
 
         public virtual ICollection<AdvertisementCategory> AdvertisementCategory { get; set; }
-        public virtual ICollection<AdvertisementImage> AdvertisementImage { get; private set; }
+        public virtual ICollection<AdvertisementImage> AdvertisementImage { get; set; }
         public virtual User User { get; set; }
     }
 }

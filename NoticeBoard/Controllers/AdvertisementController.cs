@@ -12,6 +12,8 @@ using Repo.IRepo;
 using Microsoft.AspNet.Identity;
 using System.Diagnostics;
 using PagedList;
+using System.IO;
+using System.Drawing;
 
 namespace NoticeBoard.Controllers
 {
@@ -77,14 +79,65 @@ namespace NoticeBoard.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Advertisement advertisement = _repo.GetAdvertisementById((int) id);
+            Advertisement advertisement = _repo.GetAdvertisementById((int)id);
+            var image = advertisement.AdvertisementImage;
+
+            foreach (var item in image)
+            {
+                var img = Convert.ToBase64String(item.Image);//ByteArrayToImage(item.Image);
+                string imageToView = string.Format("data:image/png;base64,{0}", img);
+                ViewBag.Image = imageToView;
+            }
+
+            //var image = ShowImages(id);
+
             if (advertisement == null)
             {
                 return HttpNotFound();
             }
             return View(advertisement);
         }
+        public ActionResult ShowImages(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            AdvertisementImage advImage = _repo.GetAdvertisementImage(id);
 
+            if(advImage == null)
+            {
+                return HttpNotFound();
+            }
+            return null;//advImage;
+        }
+        [HttpPost]
+        public ActionResult GetDocument()
+        {
+            if (Request.Files.Count > 0)
+            {
+                try
+                {
+                    var fileCount = Request.Files.Count;
+                    HttpFileCollectionBase files = Request.Files;
+                    for (int i = 0; i < files.Count; i++)
+                    {
+                        HttpPostedFileBase file = files[i];
+                        var fileName = file.FileName;
+                        var fileToArray = ImageToByteArray(file);
+                        var fileArrayToImage = ByteArrayToImage(fileToArray);
+                    }
+                    return Json("File upload successfully !");
+                }
+                catch (Exception ex)
+                {
+                    return Json(ex.Message);
+                }
+
+            }
+
+            return RedirectToAction("Index");
+        }
         //// GET: Advertisement/Create
         public ActionResult Create()
         {
@@ -97,26 +150,35 @@ namespace NoticeBoard.Controllers
         [HttpPost]
         [Authorize] //tylko dla zalogowanych
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Description,Title,Price")] Advertisement advertisement)
+        public ActionResult Create([Bind(Include = "Description,Title,Price")] Advertisement advertisement, HttpPostedFileBase ImageFile)
         {
             if (ModelState.IsValid)
             {
+                if (ImageFile != null && ImageFile.ContentLength > 0)
+                {
+                    var image = new AdvertisementImage
+                    {
+                        AdvertidementId = advertisement.Id,
+                    };
+                    using (var reader = new BinaryReader(ImageFile.InputStream))
+                    {
+                        image.Image = reader.ReadBytes(ImageFile.ContentLength);
+                    }
+                    advertisement.AdvertisementImage = new List<AdvertisementImage> { image };
+                }
+
                 advertisement.UserId = User.Identity.GetUserId();
                 advertisement.Date = DateTime.Now;
-
                 try
                 {
                     _repo.AddAdvetisement(advertisement);
                     _repo.SaveChanges();
-                    
                     return RedirectToAction("MyAdvertisements");
                 }
                 catch (Exception)
                 {
                     return View(advertisement);
                 }
-
-
             }
 
             return View(advertisement);
@@ -135,11 +197,11 @@ namespace NoticeBoard.Controllers
             {
                 return HttpNotFound();
             }
-            else if(advertisement.UserId != User.Identity.GetUserId() && !(User.IsInRole("Admin") || User.IsInRole("Moderator"))) 
+            else if (advertisement.UserId != User.Identity.GetUserId() && !(User.IsInRole("Admin") || User.IsInRole("Moderator")))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            
+
             return View(advertisement);
         }
 
@@ -163,7 +225,7 @@ namespace NoticeBoard.Controllers
                     ViewBag.Error = true;
                     return View(advertisement);
                 }
-               // return RedirectToAction("Index");
+                // return RedirectToAction("Index");
             }
             ViewBag.Error = false;
             return View(advertisement);
@@ -182,7 +244,7 @@ namespace NoticeBoard.Controllers
             {
                 return HttpNotFound();
             }
-            else if(advertisement.UserId != User.Identity.GetUserId() && !User.IsInRole("Admin"))
+            else if (advertisement.UserId != User.Identity.GetUserId() && !User.IsInRole("Admin"))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -210,6 +272,7 @@ namespace NoticeBoard.Controllers
             }
             return RedirectToAction("Index");
         }
+
         public ActionResult MyAdvertisements(int? page)
         {
             var currentPage = page ?? 1;
@@ -222,6 +285,56 @@ namespace NoticeBoard.Controllers
             return View(advertisements.ToPagedList<Advertisement>(currentPage, onPage));
             //return View(advertisements);
 
+        }
+        public byte[] ImageToByteArray(HttpPostedFileBase image)
+        {
+            byte[] imageBytes = null;
+            BinaryReader reader = new BinaryReader(image.InputStream);
+            imageBytes = reader.ReadBytes((int)image.ContentLength);
+            return imageBytes;
+        }
+        //[HttpPost]
+        //public ActionResult UploadImage(AdvertisementImage model)
+        //{
+        //    HttpPostedFileBase file = Request.Files["ImageData"];
+
+        //    return RedirectToAction("MyAdvertisements");
+        //}
+
+        //public byte[] ImageToByteArray(HttpPostedFileBase file, AdvertisementImage advertisementModel)
+        //{
+        //    advertisementModel.Image = ConvertToBytes(file);
+        //    var content = new AdvertisementImage
+        //    {
+        //        AdvertidementId = advertisementModel.Advertisement.Id,
+
+        //    };
+
+        //    //return View(advImage);
+        //    //if (uploadImages.Count() < 1) 
+        //    //{
+        //    //    return RedirectToAction("MyAdvertisements");
+        //    //}
+
+        //    //foreach (var image in uploadImages)
+        //    //{
+        //    //    if (image.ContentLength > 0)
+        //    //    {
+        //    //        byte[] imageData = null;
+        //    //        using (var reader = new BinaryReader(image.InputStream))
+        //    //        {
+        //    //            imageData = reader.ReadBytes(image.ContentLength);
+
+        //    //        }
+
+        //    //    }
+        //    //}
+        //}
+        public Image ByteArrayToImage(byte[] byteArrayImage)
+        {
+            MemoryStream ms = new MemoryStream(byteArrayImage);
+            Image image = Image.FromStream(ms);
+            return image;
         }
 
         //Get:/Advertisement

@@ -23,6 +23,10 @@ namespace Repo.Advertisements
         {
             _db.Advertisement.Add(adv);
         }
+        public void AddImageToAdvertisement(AdvertisementImage image)
+        {
+            _db.AdvertisementImage.Add(image);
+        }
 
         public bool DeleteAdvertisement(int id)
         {
@@ -50,6 +54,11 @@ namespace Repo.Advertisements
         {
             var advs = _db.Advertisement.AsNoTracking();
             return advs;
+        }
+        public AdvertisementImage GetAdvertisementImage(int? id)
+        {
+            var advImage = _db.AdvertisementImage.Find(id);
+            return advImage;
         }
 
         public void SaveChanges()
