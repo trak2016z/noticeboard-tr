@@ -24,6 +24,9 @@
 <table class="table">
     <tr>
         <th>
+            Zdjęcie
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model[0].Title)
         </th>
         <th>
@@ -42,11 +45,11 @@
     {
         <tr>
             <td>
+                @*@Html.DisplayFor(modelItem => item.AdvertisementImage)*@
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
-            @*<td>
-                    @Html.DisplayFor(modelItem => item.UserId)
-                </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
             </td>

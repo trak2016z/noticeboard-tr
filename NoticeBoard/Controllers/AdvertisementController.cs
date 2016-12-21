@@ -38,6 +38,8 @@ namespace NoticeBoard.Controllers
             ViewBag.PriceSort = sortOrder == "Cena" ? "CenaAsc" : "Cena";
 
             var advertisement = _repo.GetAdvetisements();
+            var img = _repo.GetAdvertisementImage(1220);
+
             switch (sortOrder)
             {
                 case "DataDodania":
@@ -67,6 +69,7 @@ namespace NoticeBoard.Controllers
             {
                 advertisement = advertisement.Where(s => s.Title.Contains(searchString));
             }
+
             //advertisement = advertisement.OrderByDescending(adv => adv.Date);
             return View(advertisement.ToPagedList<Advertisement>(currentPage, onPage));
 
@@ -81,15 +84,14 @@ namespace NoticeBoard.Controllers
             }
             Advertisement advertisement = _repo.GetAdvertisementById((int)id);
             var image = advertisement.AdvertisementImage;
-
+            var imageList = new List<string>();
             foreach (var item in image)
             {
-                var img = Convert.ToBase64String(item.Image);//ByteArrayToImage(item.Image);
+                var img = Convert.ToBase64String(item.Image);
                 string imageToView = string.Format("data:image/png;base64,{0}", img);
-                ViewBag.Image = imageToView;
+                imageList.Add(imageToView);
             }
-
-            //var image = ShowImages(id);
+            ViewBag.Images = imageList;
 
             if (advertisement == null)
             {
@@ -97,47 +99,8 @@ namespace NoticeBoard.Controllers
             }
             return View(advertisement);
         }
-        public ActionResult ShowImages(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            AdvertisementImage advImage = _repo.GetAdvertisementImage(id);
-
-            if(advImage == null)
-            {
-                return HttpNotFound();
-            }
-            return null;//advImage;
-        }
-        [HttpPost]
-        public ActionResult GetDocument()
-        {
-            if (Request.Files.Count > 0)
-            {
-                try
-                {
-                    var fileCount = Request.Files.Count;
-                    HttpFileCollectionBase files = Request.Files;
-                    for (int i = 0; i < files.Count; i++)
-                    {
-                        HttpPostedFileBase file = files[i];
-                        var fileName = file.FileName;
-                        var fileToArray = ImageToByteArray(file);
-                        var fileArrayToImage = ByteArrayToImage(fileToArray);
-                    }
-                    return Json("File upload successfully !");
-                }
-                catch (Exception ex)
-                {
-                    return Json(ex.Message);
-                }
-
-            }
-
-            return RedirectToAction("Index");
-        }
+       
+       
         //// GET: Advertisement/Create
         public ActionResult Create()
         {
@@ -150,21 +113,25 @@ namespace NoticeBoard.Controllers
         [HttpPost]
         [Authorize] //tylko dla zalogowanych
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Description,Title,Price")] Advertisement advertisement, HttpPostedFileBase ImageFile)
+        public ActionResult Create([Bind(Include = "Description,Title,Price")] Advertisement advertisement, IEnumerable<HttpPostedFileBase> ImageFile)
         {
             if (ModelState.IsValid)
             {
-                if (ImageFile != null && ImageFile.ContentLength > 0)
+                foreach (var item in ImageFile)
                 {
-                    var image = new AdvertisementImage
+                    if (item != null && item.ContentLength > 0)
                     {
-                        AdvertidementId = advertisement.Id,
-                    };
-                    using (var reader = new BinaryReader(ImageFile.InputStream))
-                    {
-                        image.Image = reader.ReadBytes(ImageFile.ContentLength);
+                        var image = new AdvertisementImage
+                        {
+                            AdvertidementId = advertisement.Id
+                        };
+
+                        using (var reader = new BinaryReader(item.InputStream))
+                        {
+                            image.Image = reader.ReadBytes(item.ContentLength);
+                        }
+                        advertisement.AdvertisementImage.Add(image);
                     }
-                    advertisement.AdvertisementImage = new List<AdvertisementImage> { image };
                 }
 
                 advertisement.UserId = User.Identity.GetUserId();
@@ -282,61 +249,30 @@ namespace NoticeBoard.Controllers
             var advertisements = _repo.GetAdvetisements();
             advertisements = advertisements.OrderByDescending(d => d.Date).Where(u => u.UserId == userId);
 
+            var adv = _repo.GetAdvertisementById(1221);
+
+            var image = adv.AdvertisementImage;
+            foreach (var item in image)
+            {
+                var img = Convert.ToBase64String(item.Image);
+                string imageToView = string.Format("data:image/png;base64,{0}", img);
+                ViewBag.ThumbImgAdv = imageToView;
+            }
+            
+            //var imageList = new List<string>();
+            //foreach (var item in image)
+            //{
+            //    var img = Convert.ToBase64String(item.Image);
+            //    string imageToView = string.Format("data:image/png;base64,{0}", img);
+            //    imageList.Add(imageToView);
+            //}
+            //ViewBag.Images = imageList;
+
             return View(advertisements.ToPagedList<Advertisement>(currentPage, onPage));
             //return View(advertisements);
 
         }
-        public byte[] ImageToByteArray(HttpPostedFileBase image)
-        {
-            byte[] imageBytes = null;
-            BinaryReader reader = new BinaryReader(image.InputStream);
-            imageBytes = reader.ReadBytes((int)image.ContentLength);
-            return imageBytes;
-        }
-        //[HttpPost]
-        //public ActionResult UploadImage(AdvertisementImage model)
-        //{
-        //    HttpPostedFileBase file = Request.Files["ImageData"];
-
-        //    return RedirectToAction("MyAdvertisements");
-        //}
-
-        //public byte[] ImageToByteArray(HttpPostedFileBase file, AdvertisementImage advertisementModel)
-        //{
-        //    advertisementModel.Image = ConvertToBytes(file);
-        //    var content = new AdvertisementImage
-        //    {
-        //        AdvertidementId = advertisementModel.Advertisement.Id,
-
-        //    };
-
-        //    //return View(advImage);
-        //    //if (uploadImages.Count() < 1) 
-        //    //{
-        //    //    return RedirectToAction("MyAdvertisements");
-        //    //}
-
-        //    //foreach (var image in uploadImages)
-        //    //{
-        //    //    if (image.ContentLength > 0)
-        //    //    {
-        //    //        byte[] imageData = null;
-        //    //        using (var reader = new BinaryReader(image.InputStream))
-        //    //        {
-        //    //            imageData = reader.ReadBytes(image.ContentLength);
-
-        //    //        }
-
-        //    //    }
-        //    //}
-        //}
-        public Image ByteArrayToImage(byte[] byteArrayImage)
-        {
-            MemoryStream ms = new MemoryStream(byteArrayImage);
-            Image image = Image.FromStream(ms);
-            return image;
-        }
-
+        
         //Get:/Advertisement
         //public ActionResult Partial()
         //{

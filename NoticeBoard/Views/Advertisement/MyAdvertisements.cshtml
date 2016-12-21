@@ -2,7 +2,7 @@
 @using Microsoft.AspNet.Identity;
 
 @model PagedList.IPagedList<Repo.Models.Advertisement>
-@*@model Repo.Models.Advertisement*@
+
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 @{
     ViewBag.Title = "Moje ogłoszenia";
@@ -25,6 +25,9 @@
 <table class="table">
     <tr>
         <th>
+            Zdjęcie
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model[0].Title)
         </th>
         <th>
@@ -43,11 +46,12 @@
     {
         <tr>
             <td>
+                <img src="@ViewBag.ThumbImgAdv" width="200" height="200" />
+                @*@Html.DisplayFor(modelItem => item.AdvertisementImage)*@
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
-            @*<td>
-                    @Html.DisplayFor(modelItem => item.UserId)
-                </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
             </td>

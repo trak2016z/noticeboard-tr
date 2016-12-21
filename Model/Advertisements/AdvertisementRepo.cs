@@ -30,6 +30,9 @@ namespace Repo.Advertisements
 
         public bool DeleteAdvertisement(int id)
         {
+            AdvertisementImage advImg = _db.AdvertisementImage.Find(id);
+            _db.AdvertisementImage.Remove(advImg);
+
             Advertisement adv = _db.Advertisement.Find(id);
             _db.Advertisement.Remove(adv);
             try
@@ -57,7 +60,7 @@ namespace Repo.Advertisements
         }
         public AdvertisementImage GetAdvertisementImage(int? id)
         {
-            var advImage = _db.AdvertisementImage.Find(id);
+            var advImage = _db.AdvertisementImage.First(a => a.Id == 5);
             return advImage;
         }
 
