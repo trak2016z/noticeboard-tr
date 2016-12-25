@@ -37,8 +37,7 @@ namespace Repo.Models
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>(); // plural name index of table id Db turn off
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>(); // global turn off CascadeDelete
 
-            modelBuilder.Entity<Advertisement>().HasRequired(x => x.User).WithMany(x => x.Advertisements).HasForeignKey(x => x.UserId).WillCascadeOnDelete(true); 
-            
+            modelBuilder.Entity<Advertisement>().HasRequired(x => x.User).WithMany(x => x.Advertisements).HasForeignKey(x => x.UserId).WillCascadeOnDelete(true);
             //Fluent API, relation beetwen table in DB and turn on CascadeDelete in relation Advertisement - User
         }
     }

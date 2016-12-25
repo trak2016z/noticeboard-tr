@@ -38,7 +38,6 @@ namespace NoticeBoard.Controllers
             ViewBag.PriceSort = sortOrder == "Cena" ? "CenaAsc" : "Cena";
 
             var advertisement = _repo.GetAdvetisements();
-            var img = _repo.GetAdvertisementImage(1220);
 
             switch (sortOrder)
             {
@@ -99,8 +98,8 @@ namespace NoticeBoard.Controllers
             }
             return View(advertisement);
         }
-       
-       
+
+
         //// GET: Advertisement/Create
         public ActionResult Create()
         {
@@ -249,6 +248,31 @@ namespace NoticeBoard.Controllers
             var advertisements = _repo.GetAdvetisements();
             advertisements = advertisements.OrderByDescending(d => d.Date).Where(u => u.UserId == userId);
 
+           
+            //foreach (var item in advertisements)
+            //{
+            //    //var advertisementId = item.Id;
+
+            //    //var getAdvByid = _repo.GetAdvertisementById(advertisementId);
+            //    //var images = getAdvByid.AdvertisementImage;
+            //    string imageToView = null;
+            //    if (item.AdvertisementImage.Count > 0)
+            //    {
+            //        foreach (var image in item.AdvertisementImage)
+            //        {
+            //            var img = Convert.ToBase64String(image.Image);
+            //            imageToView = string.Format("data:image/png;base64,{0}", img);
+            //            ViewBag.ThumbImgAdv = imageToView;
+            //        }
+            //    }
+            //    else
+            //    {
+            //        //imageToView = null;
+            //        ViewBag.ThumbImgAdv = imageToView;
+            //    }
+            //}
+
+
             var adv = _repo.GetAdvertisementById(1221);
 
             var image = adv.AdvertisementImage;
@@ -258,7 +282,14 @@ namespace NoticeBoard.Controllers
                 string imageToView = string.Format("data:image/png;base64,{0}", img);
                 ViewBag.ThumbImgAdv = imageToView;
             }
-            
+            foreach (var item in advertisements)
+            {
+                var img = item.AdvertisementImage;
+                foreach (var item1 in img)
+                {
+                    var image1 = item1.Image;
+                }
+            }
             //var imageList = new List<string>();
             //foreach (var item in image)
             //{
@@ -272,7 +303,7 @@ namespace NoticeBoard.Controllers
             //return View(advertisements);
 
         }
-        
+
         //Get:/Advertisement
         //public ActionResult Partial()
         //{

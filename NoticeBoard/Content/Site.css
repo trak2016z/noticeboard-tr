@@ -22,12 +22,20 @@ select,
 textarea {
     max-width: 280px;
 }
-tr{
+
+tr {
     background-color: #efefef;
 }
-tr:hover td{
-    background-color: white;
-}
-#buttonGroupInAdvList{
+
+    tr:hover td {
+        background-color: white;
+    }
+
+#buttonGroupInAdvList {
     float: right;
+}
+
+img.resize {
+    max-width: 200px;
+    max-height: 200px;
 }

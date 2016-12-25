@@ -14,74 +14,82 @@
     @Html.ActionLink("Dodaj ogłoszenie", "Create", null, new { @class = "btn btn-success" })
 }
 
-@*@using (Html.BeginForm())
-{
-    <p>
-        Wyszukaj: @Html.TextBox("SearchString")
-        <input type="submit" value="Wyszukaj" />
-    </p>
-}*@
+    @*@using (Html.BeginForm())
+        {
+            <p>
+                Wyszukaj: @Html.TextBox("SearchString")
+                <input type="submit" value="Wyszukaj" />
+            </p>
+        }*@
 
-<table class="table">
-    <tr>
-        <th>
-            Zdjęcie
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model[0].Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model[0].Description)
-        </th>
-        <th>
-            @Html.ActionLink("Data dodania", "Index", new { sortOrder = ViewBag.DateSort })
-        </th>
-        <th>
-            @Html.ActionLink("Cena", "Index", new { sortOrder = ViewBag.PriceSort })
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
+    <table class="table">
         <tr>
-            <td>
-                <img src="@ViewBag.ThumbImgAdv" width="200" height="200" />
-                @*@Html.DisplayFor(modelItem => item.AdvertisementImage)*@
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
+            <th>
+                Zdjęcie
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Description)
+            </th>
+            <th>
+                @Html.ActionLink("Data dodania", "Index", new { sortOrder = ViewBag.DateSort })
+            </th>
+            <th>
+                @Html.ActionLink("Cena", "Index", new { sortOrder = ViewBag.PriceSort })
+            </th>
+            <th></th>
+        </tr>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                <div id="buttonGroupInAdvList" class="btn-group">
-                    @if (User.Identity.IsAuthenticated && (User.IsInRole("Admin") || (User.IsInRole("Moderator"))))
-                    {
-                        @Html.ActionLink("Edytuj", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" })
-                        if (User.IsInRole("Admin"))
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @{
+                        var images = item.AdvertisementImage;
+                        string imageInItem;
+                        foreach (var img in images)
                         {
-                            @Html.ActionLink("Usuń", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                            imageInItem = System.Convert.ToBase64String(img.Image);
+                            <img class="resize" src="data:image;base64,@imageInItem" />
+                            break;
                         }
                     }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
 
-                    @Html.ActionLink("Szczegóły", "Details", new { id = item.Id }, new { @class = "btn btn-info" })
-                </div>
-            </td>
-        </tr>
-    }
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    <div id="buttonGroupInAdvList" class="btn-group">
+                        @if (User.Identity.IsAuthenticated && (User.IsInRole("Admin") || (User.IsInRole("Moderator"))))
+                        {
+                            @Html.ActionLink("Edytuj", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" })
+                            if (User.IsInRole("Admin"))
+                            {
+                                @Html.ActionLink("Usuń", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                            }
+                        }
 
-</table>
-<div>
-    <br />
-    Strona @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) z @Model.PageCount
-    @Html.PagedListPager(Model, page => Url.Action("MyAdvertisements", new { page, sortOrder = ViewBag.CurrentSort }))
-</div>
+                        @Html.ActionLink("Szczegóły", "Details", new { id = item.Id }, new { @class = "btn btn-info" })
+                    </div>
+                </td>
+            </tr>
+                        }
+
+    </table>
+    <div>
+        <br />
+        Strona @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) z @Model.PageCount
+        @Html.PagedListPager(Model, page => Url.Action("MyAdvertisements", new { page, sortOrder = ViewBag.CurrentSort }))
+    </div>

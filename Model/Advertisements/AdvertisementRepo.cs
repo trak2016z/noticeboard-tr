@@ -30,8 +30,8 @@ namespace Repo.Advertisements
 
         public bool DeleteAdvertisement(int id)
         {
-            AdvertisementImage advImg = _db.AdvertisementImage.Find(id);
-            _db.AdvertisementImage.Remove(advImg);
+            //AdvertisementImage advImg = _db.AdvertisementImage.Find(id);
+            //_db.AdvertisementImage.Remove(advImg);
 
             Advertisement adv = _db.Advertisement.Find(id);
             _db.Advertisement.Remove(adv);

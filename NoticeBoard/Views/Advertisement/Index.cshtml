@@ -5,7 +5,12 @@
 @{
     ViewBag.Title = "Ogłoszenia";
 }
-
+<style>
+    img.resize {
+        max-width: 200px;
+        max-height: 200px;
+    }
+</style>
 <h2>Lista ogłoszeń</h2>
 @if (User.Identity.IsAuthenticated)
 {
@@ -45,7 +50,16 @@
     {
         <tr>
             <td>
-                @*@Html.DisplayFor(modelItem => item.AdvertisementImage)*@
+                @{
+                    var images = item.AdvertisementImage;
+                    string imageInItem;
+                    foreach (var img in images)
+                    {
+                        imageInItem = System.Convert.ToBase64String(img.Image);
+                        <img class="resize" src="data:image;base64,@imageInItem" />
+                        break;
+                    }
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
@@ -75,7 +89,7 @@
                 </div>
             </td>
         </tr>
-    }
+                    }
 
 </table>
 <div>
