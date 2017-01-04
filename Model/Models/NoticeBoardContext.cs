@@ -38,7 +38,10 @@ namespace Repo.Models
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>(); // global turn off CascadeDelete
 
             modelBuilder.Entity<Advertisement>().HasRequired(x => x.User).WithMany(x => x.Advertisements).HasForeignKey(x => x.UserId).WillCascadeOnDelete(true);
+            modelBuilder.Entity<AdvertisementImage>().HasRequired(x => x.Advertisement).WithMany(x => x.AdvertisementImage).HasForeignKey(x => x.AdvertisementId).WillCascadeOnDelete(true);
             //Fluent API, relation beetwen table in DB and turn on CascadeDelete in relation Advertisement - User
+            //modelBuilder.Entity<Advertisement>().HasOptional(x => x.AdvertisementImage).WithOptionalDependent().WillCascadeOnDelete(true);
+
         }
     }
 }

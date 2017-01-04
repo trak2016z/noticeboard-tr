@@ -32,9 +32,9 @@ namespace Model.Migrations
 
             SeedRoles(context);
             SeedUser(context);
-            SeedAdvertisements(context);
-            SeedCaterogy(context);
-            SeedAdvertisement_Category(context);
+            //SeedAdvertisements(context);
+            //SeedCaterogy(context);
+            //SeedAdvertisement_Category(context);
             
 
         }

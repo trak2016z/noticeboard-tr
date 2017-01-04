@@ -15,7 +15,7 @@ namespace Repo.Models
 
         [Key]
         public int Id { get; set; }
-        public int AdvertidementId { get; set; }
+        public int AdvertisementId { get; set; }
         public byte[] Image { get; set; }
 
         public virtual Advertisement Advertisement { get; set; }

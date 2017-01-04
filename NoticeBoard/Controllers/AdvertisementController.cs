@@ -106,6 +106,11 @@ namespace NoticeBoard.Controllers
             return View();
         }
 
+        public int GenerateNewAdvertisementId()
+        {
+            int newId = Convert.ToInt32(DateTime.Now.ToString("yyddHHmmss"));
+            return newId;
+        }
         //// POST: Advertisement/Create
         //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -116,13 +121,17 @@ namespace NoticeBoard.Controllers
         {
             if (ModelState.IsValid)
             {
+                //advertisement.Id = GenerateNewAdvertisementId();
+                advertisement.UserId = User.Identity.GetUserId();
+                advertisement.Date = DateTime.Now;
+
                 foreach (var item in ImageFile)
                 {
                     if (item != null && item.ContentLength > 0)
                     {
                         var image = new AdvertisementImage
                         {
-                            AdvertidementId = advertisement.Id
+                            //AdvertidementId = advertisement.Id,
                         };
 
                         using (var reader = new BinaryReader(item.InputStream))
@@ -132,9 +141,7 @@ namespace NoticeBoard.Controllers
                         advertisement.AdvertisementImage.Add(image);
                     }
                 }
-
-                advertisement.UserId = User.Identity.GetUserId();
-                advertisement.Date = DateTime.Now;
+               
                 try
                 {
                     _repo.AddAdvetisement(advertisement);
@@ -226,7 +233,9 @@ namespace NoticeBoard.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            //_repo.DeleteAllImageFromAdvertisement(id);
             _repo.DeleteAdvertisement(id);
+
             try
             {
                 _repo.SaveChanges();
@@ -248,7 +257,6 @@ namespace NoticeBoard.Controllers
             var advertisements = _repo.GetAdvetisements();
             advertisements = advertisements.OrderByDescending(d => d.Date).Where(u => u.UserId == userId);
 
-           
             //foreach (var item in advertisements)
             //{
             //    //var advertisementId = item.Id;
@@ -272,7 +280,7 @@ namespace NoticeBoard.Controllers
             //    }
             //}
 
-
+            /*
             var adv = _repo.GetAdvertisementById(1221);
 
             var image = adv.AdvertisementImage;
@@ -282,6 +290,7 @@ namespace NoticeBoard.Controllers
                 string imageToView = string.Format("data:image/png;base64,{0}", img);
                 ViewBag.ThumbImgAdv = imageToView;
             }
+
             foreach (var item in advertisements)
             {
                 var img = item.AdvertisementImage;
@@ -290,6 +299,8 @@ namespace NoticeBoard.Controllers
                     var image1 = item1.Image;
                 }
             }
+            */
+
             //var imageList = new List<string>();
             //foreach (var item in image)
             //{
