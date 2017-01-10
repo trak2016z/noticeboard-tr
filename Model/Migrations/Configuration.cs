@@ -1,12 +1,13 @@
 namespace Model.Migrations
 {
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using Repo.Models;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
-    using Repo.Models;
-    using Microsoft.AspNet.Identity;
-    using Microsoft.AspNet.Identity.EntityFramework;
+
     internal sealed class Configuration : DbMigrationsConfiguration<Repo.Models.NoticeBoardContext>
     {
         public Configuration()
@@ -17,6 +18,8 @@ namespace Model.Migrations
 
         protected override void Seed(Repo.Models.NoticeBoardContext context)
         {
+            SeedRoles(context);
+            SeedUser(context);
             //  This method will be called after migrating to the latest version.
 
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
@@ -29,15 +32,8 @@ namespace Model.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
-
-            SeedRoles(context);
-            SeedUser(context);
-            //SeedAdvertisements(context);
-            //SeedCaterogy(context);
-            //SeedAdvertisement_Category(context);
-            
-
         }
+
         private void SeedRoles(NoticeBoardContext context)
         {
             var roleManager = new RoleManager<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>(new RoleStore<IdentityRole>());
@@ -61,9 +57,10 @@ namespace Model.Migrations
         {
             var store = new UserStore<User>(context);
             var manager = new UserManager<User>(store);
-            if(!context.User.Any(u => u.UserName == "Admin"))
+            if (!context.User.Any(u => u.UserName == "Admin"))
             {
-                var user = new User {
+                var user = new User
+                {
                     UserName = "admin@admin.pl",
                     Email = "admin@admin.pl",
                     FirsName = "Lukasz",
@@ -84,7 +81,7 @@ namespace Model.Migrations
                     UserName = "lukasz@lukasz.pl",
                     Email = "lukasz@lukasz.pl",
                     FirsName = "Lukasz",
-                    SecondName = "Wal"
+                    SecondName = "Wal",
                 };
 
                 var adminResult = manager.Create(user, "qwerty");
@@ -95,51 +92,6 @@ namespace Model.Migrations
             }
 
         }
-        private void SeedAdvertisements(NoticeBoardContext context)
-        {
-            var userId = context.Set<User>().Where(u => u.UserName == "Admin").FirstOrDefault().Id;
 
-            for (int i = 0; i < 25; i++)
-            {
-                var adv = new Advertisement()
-                {
-                    Id = i,
-                    UserId = userId,
-                    Description = "Tresc ogloszenia " + i.ToString(),
-                    Title = "Tytu³ og³oszenia " + i.ToString(),
-                    Date = DateTime.Now.AddDays(-i)
-                };
-                context.Set<Advertisement>().AddOrUpdate(adv);
-            }
-            context.SaveChanges();
-        }
-        private void SeedCaterogy(NoticeBoardContext context)
-        {
-            for (int i = 0; i < 15; i++)
-            {
-                var cat = new Category()
-                {
-                    Id = i,
-                    Name = "Kategoria " + i.ToString(),
-                    ParentId = i
-                };
-                context.Set<Category>().AddOrUpdate(cat);
-            }
-            context.SaveChanges();
-        }
-        private void SeedAdvertisement_Category(NoticeBoardContext context)
-        {
-            for (int i = 0; i < 15; i++)
-            {
-                var advCat = new AdvertisementCategory()
-                {
-                    Id = i,
-                    AdvertisementId = i + 1,
-                    CategoryId = i + 2
-                };
-                context.Set<AdvertisementCategory>().AddOrUpdate(advCat);
-            }
-            context.SaveChanges();
-        }
     }
 }

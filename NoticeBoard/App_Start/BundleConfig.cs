@@ -31,6 +31,12 @@ namespace NoticeBoard
                     "~/Scripts/advertisementScripts.js"
                 ));
 
+            bundles.Add(new ScriptBundle("~/bundles/globalization").Include(
+                    "~/Scripts/jquery.globalize/globalize.js",
+                    "~/Scripts/jquery.globalize/cultures/globalize.culture.pl-PL.js",
+                    "~/Scripts/jquery.globalize/cultures/globalize.culture.pl.js"
+                ));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));

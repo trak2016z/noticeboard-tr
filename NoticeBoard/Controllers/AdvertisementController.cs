@@ -245,7 +245,7 @@ namespace NoticeBoard.Controllers
 
                 return RedirectToAction("Delete", new { id = id, error = true });
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("MyAdvertisements");
         }
 
         public ActionResult MyAdvertisements(int? page)

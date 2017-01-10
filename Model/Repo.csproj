@@ -159,17 +159,9 @@
     <Compile Include="Advertisements\AdvertisementRepo.cs" />
     <Compile Include="IRepo\IAdvertisementContext.cs" />
     <Compile Include="IRepo\IAdvertisementRepo.cs" />
-    <Compile Include="Migrations\201610120810502_FirstDatabase.cs" />
-    <Compile Include="Migrations\201610120810502_FirstDatabase.Designer.cs">
-      <DependentUpon>201610120810502_FirstDatabase.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201701021152454_second.cs" />
-    <Compile Include="Migrations\201701021152454_second.Designer.cs">
-      <DependentUpon>201701021152454_second.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201701021232153_third.cs" />
-    <Compile Include="Migrations\201701021232153_third.Designer.cs">
-      <DependentUpon>201701021232153_third.cs</DependentUpon>
+    <Compile Include="Migrations\201701041331160_init.cs" />
+    <Compile Include="Migrations\201701041331160_init.Designer.cs">
+      <DependentUpon>201701041331160_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AdvertisementImage.cs" />
@@ -182,14 +174,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201610120810502_FirstDatabase.resx">
-      <DependentUpon>201610120810502_FirstDatabase.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701021152454_second.resx">
-      <DependentUpon>201701021152454_second.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701021232153_third.resx">
-      <DependentUpon>201701021232153_third.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201701041331160_init.resx">
+      <DependentUpon>201701041331160_init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

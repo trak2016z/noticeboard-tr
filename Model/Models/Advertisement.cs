@@ -21,10 +21,12 @@ namespace Repo.Models
 
         [Display(Name = "Treść ogłoszenia:")]
         [MaxLength(500)]
+        [Required(ErrorMessage = "Treść ogłoszenia jest wymagana")]
         public string Description { get; set; }
 
         [Display(Name = "Tytuł ogłoszenia")]
         [MaxLength(250)]
+        [Required(ErrorMessage = "Tytuł jest wymagany")]
         public string Title { get; set; }
 
         [Display(Name = "Data dodania")]
@@ -34,8 +36,9 @@ namespace Repo.Models
 
         [Display(Name = "Cena")]
         [DataType(DataType.Currency)]
+        //[DisplayFormat(DataFormatString = "{0:c}", ApplyFormatInEditMode = true)]
         [Required(ErrorMessage = "Cena jest wymagana")]
-        public decimal Price { get; set; }
+        public double Price { get; set; }
 
         public string UserId { get; set; }
 
